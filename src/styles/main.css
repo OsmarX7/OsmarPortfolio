@@ -1,0 +1,96 @@
+:root {
+  --primary: #b7ff00;
+  --secondary: #8a2be2;
+  --black: #000000;
+  --white: #ffffff;
+  --gray-100: #f5f5f5;
+  --gray-200: #e5e5e5;
+  --gray-300: #d4d4d4;
+  --gray-600: #525252;
+  --gray-800: #262626;
+  --gray-900: #171717;
+
+  --font-heading: "Syne", sans-serif;
+  --font-body: "JetBrains Mono", monospace;
+
+  --container-max: 1200px;
+  --container-padding: 1.5rem;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100dvh;
+  background-color: var(--black);
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+p {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+ul {
+  list-style: none;
+}
+
+img,
+video,
+svg {
+  height: auto;
+  max-width: 100%;
+  vertical-align: middle;
+  pointer-events: none;
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+    transition: none;
+  }
+}

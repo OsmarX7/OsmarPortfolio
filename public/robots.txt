@@ -1,0 +1,5 @@
+# https://www.robotstxt.org/robotstxt.html
+
+# Permitir que todos los buscadores indexen todo el sitio
+User-agent: *
+Allow: /

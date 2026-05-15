@@ -1,0 +1,259 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  date: string;
+  role: string;
+  company: string;
+  description: string;
+  side: "left" | "right";
+  sticker: ImageMetadata;
+}
+
+const { date, role, company, description, side, sticker } = Astro.props;
+---
+
+<article class={`timeline__item timeline__item--${side}`}>
+  <div class="timeline__sticker-wrapper">
+    <Image
+      src={sticker}
+      alt="Decoración"
+      class="timeline__sticker"
+      style={`--random-rot: ${Math.random() * 20 - 10}deg;`}
+    />
+  </div>
+
+  <div class="timeline__card">
+    <div class="timeline__card-connector"></div>
+
+    <span class="timeline__date">{date}</span>
+    <h3 class="timeline__role">{role}</h3>
+    <p class="timeline__company">{company}</p>
+    <p class="timeline__desc">{description}</p>
+  </div>
+
+  <div class="timeline__dot" aria-hidden="true">
+    <div class="timeline__dot-inner"></div>
+  </div>
+</article>
+
+<style>
+  .timeline__item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 8rem;
+    isolation: isolate;
+  }
+
+  .timeline__item--left {
+    justify-content: flex-end;
+    padding-right: 50%;
+  }
+  .timeline__item--right {
+    justify-content: flex-start;
+    padding-left: 50%;
+  }
+
+  .timeline__sticker-wrapper {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .timeline__item--left .timeline__sticker-wrapper {
+    left: 55%;
+  }
+  .timeline__item--right .timeline__sticker-wrapper {
+    right: 55%;
+  }
+
+  .timeline__sticker {
+    max-width: 210px;
+    height: 210px;
+    object-fit: contain;
+    filter: drop-shadow(8px 8px 0px rgba(0, 0, 0, 0.4));
+    transform: rotate(var(--random-rot, -5deg));
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: auto;
+  }
+
+  .timeline__sticker:hover {
+    transform: scale(1.1) rotate(0deg) translateY(-10px);
+    filter: drop-shadow(
+      15px 15px 0px rgba(130, 245, 155, 0.2)
+    );
+  }
+
+  .timeline__card {
+    width: calc(100% - 4rem);
+    padding: 2.5rem;
+    background-color: var(--gray-900);
+    position: relative;
+    transition: all 0.4s ease;
+
+    --mask: radial-gradient(15px at 0 50%, #0000 98%, #000) 0 0/100% 100%
+      no-repeat;
+    -webkit-mask: var(--mask);
+    mask: var(--mask);
+
+    border-left: 2px dashed var(--primary);
+  }
+
+  .timeline__item--left .timeline__card {
+    margin-right: 4rem;
+    border-left: none;
+    border-right: 2px dashed var(--primary);
+    --mask: radial-gradient(15px at 100% 50%, #0000 98%, #000) 0 0/100% 100%
+      no-repeat;
+  }
+
+  .timeline__item--right .timeline__card {
+    margin-left: 4rem;
+  }
+
+  .timeline__card:hover {
+    background-color: #1a1a1a;
+    transform: translateX(var(--hover-shift, 5px));
+    box-shadow: 20px 0 50px -20px rgba(var(--primary-rgb), 0.15);
+  }
+
+  .timeline__item--left .timeline__card:hover {
+    --hover-shift: -5px;
+  }
+
+  .timeline__card-connector {
+    position: absolute;
+    top: 10px;
+    width: 4rem;
+    height: 1px;
+    background: linear-gradient(90deg, var(--primary), transparent);
+    opacity: 0.3;
+    transition: all 0.4s ease;
+  }
+
+  .timeline__item--left .timeline__card-connector {
+    right: -4rem;
+    background: linear-gradient(-90deg, var(--primary), transparent);
+  }
+
+  .timeline__item--right .timeline__card-connector {
+    left: -4rem;
+  }
+
+  .timeline__card:hover .timeline__card-connector {
+    opacity: 1;
+    width: 4.5rem;
+  }
+
+  .timeline__dot {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translate(-50%, 0);
+    z-index: 20;
+    transition: all 0.4s ease;
+  }
+
+  .timeline__dot-inner {
+    width: 10px;
+    height: 10px;
+    background-color: var(--primary);
+    border-radius: 2px;
+    transform: rotate(45deg);
+    box-shadow: 0 0 15px var(--primary);
+    transition: all 0.4s ease;
+  }
+
+  .timeline__item:hover .timeline__dot-inner {
+    transform: rotate(135deg) scale(1.5);
+    background-color: #fff;
+    box-shadow: 0 0 25px var(--primary);
+  }
+
+  .timeline__date {
+    color: var(--primary);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+  .timeline__role {
+    font-family: var(--font-heading);
+    color: var(--white);
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+  .timeline__company {
+    color: var(--gray-300);
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+  }
+  .timeline__desc {
+    color: var(--white);
+    line-height: 1.7;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+  .timeline__line {
+    left: 20px;
+    transform: none;
+  }
+
+  .timeline__item--left, 
+  .timeline__item--right {
+    padding-left: 45px;
+    padding-right: 0;
+    justify-content: flex-start;
+    margin-bottom: 4rem;
+  }
+
+  .timeline__sticker-wrapper {
+    display: none;
+  }
+
+  .timeline__card {
+    width: 100%;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 1.5rem;
+    
+    border-right: none !important;
+    border-left: 2px dashed var(--primary) !important;
+    --mask: radial-gradient(15px at 0 50%, #0000 98%, #000) 0 0/100% 100% no-repeat !important;
+    -webkit-mask: var(--mask) !important;
+    mask: var(--mask) !important;
+  }
+
+  .timeline__dot {
+    left: 20px;
+  }
+
+  .timeline__card-connector {
+    left: -25px !important;
+    width: 25px !important;
+    right: auto !important;
+    background: linear-gradient(90deg, var(--primary), transparent) !important;
+  }
+
+  .timeline__card:hover {
+    transform: translateY(-5px);
+    --hover-shift: 0px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    margin-left: 1rem;
+    font-size: 2.2rem;
+  }
+}
+</style>

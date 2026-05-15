@@ -1,0 +1,508 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  number: string;
+  name: string;
+  description: string;
+  tech: string[];
+  demoUrl: string;
+  repoUrl: string;
+  images: ImageMetadata[];
+}
+
+const { number, name, description, tech, demoUrl, repoUrl, images } =
+  Astro.props;
+---
+
+<article class="project-card" data-project-card>
+  <div class="project-card__info">
+    <span class="project-card__number">{number}</span>
+    <h3 class="project-card__name">{name}</h3>
+    <p class="project-card__description">{description}</p>
+    <ul class="project-card__tech">
+      {tech.map((item) => <li>{item}</li>)}
+    </ul>
+    <div class="project-card__links">
+      <a
+        href={demoUrl}
+        class="project-card__link"
+        target="_blank"
+        rel="noopener noreferrer">Demo</a
+      >
+      <a
+        href={repoUrl}
+        class="project-card__link"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Ver repositorio"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="project-card__images" data-trigger>
+    <div class="project-card__image-stack">
+      {
+        images.map((img, index) => (
+          <div class={`project-card__image project-card__image--${3 - index}`}>
+            <Image src={img} alt={`${name} preview ${index + 1}`} />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <dialog class="project-modal" data-modal>
+    <div class="project-modal__content">
+      <button class="project-modal__close" data-close aria-label="Cerrar"
+        >×</button
+      >
+
+      <div class="carousel">
+        <button
+          class="carousel__btn carousel__btn--prev"
+          data-prev
+          aria-label="Anterior">‹</button
+        >
+
+        <div class="carousel__viewport">
+          {
+            images.map((img, index) => (
+              <div
+                class="carousel__slide"
+                data-slide
+                data-active={index === 0 ? "" : null}
+              >
+                <Image
+                  src={img}
+                  alt={`${name} full view ${index + 1}`}
+                  class="modal-img"
+                />
+              </div>
+            ))
+          }
+        </div>
+
+        <button
+          class="carousel__btn carousel__btn--next"
+          data-next
+          aria-label="Siguiente">›</button
+        >
+      </div>
+
+      <div class="carousel__dots">
+        {
+          images.map((_, index) => (
+            <span class="dot" data-dot data-active={index === 0 ? "" : null} />
+          ))
+        }
+      </div>
+    </div>
+  </dialog>
+</article>
+
+<style>
+  .project-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    background-color: var(--white);
+    border: 2px solid var(--black);
+    position: relative;
+    z-index: 30;
+    transition:
+      transform 0.4s cubic-bezier(0.2, 1, 0.3, 1),
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .project-card:first-of-type::before {
+    content: "";
+    position: absolute;
+    top: -200px;
+    right: 12%;
+    width: 200px;
+    height: 290px;
+
+    background-image: url("../assets/img/columne.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    transform: rotate(8deg);
+    filter: drop-shadow(8px 8px 15px rgba(0, 0, 0, 0.3));
+    pointer-events: none;
+    transition: transform 0.4s ease;
+  }
+
+  .project-card:first-of-type:hover::before {
+    transform: rotate(12deg) translateY(-5px);
+  }
+
+  .project-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--secondary);
+
+    box-shadow: 0 10px 30px -10px rgba(var(--primary-rgb), 0.3);
+  }
+  .project-card:hover .project-card__number {
+    color: var(--secondary);
+    transform: translateX(5px);
+    display: inline-block;
+    transition: all 0.3s ease;
+  }
+
+  .project-card__info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-card__number {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--gray-600);
+    margin-bottom: 0.5rem;
+  }
+
+  .project-card__name {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 0.75rem;
+  }
+
+  .project-card__description {
+    font-size: 0.9375rem;
+    color: var(--gray-600);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .project-card__tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-card__tech li {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--gray-300);
+    border-radius: 999px;
+    color: var(--gray-800);
+  }
+
+  .project-card__links {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .project-card__link {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: color 0.2s ease;
+  }
+
+  .project-card__link:hover {
+    color: var(--secondary);
+  }
+
+  .project-card__images {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 200px;
+  }
+
+  .project-card__image-stack {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    aspect-ratio: 16/10;
+    perspective: 1000px;
+  }
+
+  .project-card__image-stack:hover .project-card__image {
+    transform: rotate(-2deg) translateY(-5px);
+    border-color: var(--primary);
+  }
+
+  .project-card__image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--gray-200);
+    border: 2px solid var(--black);
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    img {
+      height: 100%;
+      opacity: 0.9;
+      object-fit: fill;
+    }
+  }
+
+  .project-card__image--1 {
+    z-index: 3;
+    background: linear-gradient(135deg, var(--gray-100), var(--gray-200));
+  }
+
+  .project-card__image--2 {
+    z-index: 2;
+    transform: translate(12px, 12px) rotate(2deg);
+    background: linear-gradient(135deg, var(--gray-200), var(--gray-300));
+  }
+
+  .project-card__image--3 {
+    z-index: 1;
+    transform: translate(24px, 24px) rotate(4deg);
+    background: linear-gradient(135deg, var(--gray-300), var(--gray-200));
+  }
+
+  .project-modal {
+    border: none;
+    background: transparent;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    max-height: 100%;
+    padding: 0;
+    overflow: hidden;
+  }
+  .project-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(8px);
+  }
+  .project-modal__content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+  .project-modal__close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: var(--primary);
+    color: var(--black);
+    border: 2px solid var(--black);
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 100;
+  }
+
+  .carousel {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1100px;
+    gap: 1.5rem;
+  }
+  .carousel__viewport {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+  }
+  .carousel__slide {
+    display: none;
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 0.4s ease;
+  }
+  .carousel__slide[data-active] {
+    display: block;
+  }
+
+  .modal-img {
+    max-height: 80vh;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    border: 3px solid var(--white);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  }
+
+  .carousel__btn {
+    background: var(--primary);
+    border: 2px solid var(--black);
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+  .carousel__btn:active {
+    transform: scale(0.9);
+  }
+
+  .project-modal__close,
+  .carousel__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    padding-bottom: 2px;
+  }
+
+  .carousel__dots {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 2rem;
+  }
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid var(--white);
+    transition: all 0.3s;
+  }
+  .dot[data-active] {
+    background: var(--primary);
+    transform: scale(1.3);
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @media (max-width: 992px) {
+    .project-card:first-of-type::before {
+      top: -190px;
+      right: 0;
+      width: 260px;
+      height: 310px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .project-card {
+      grid-template-columns: 1fr;
+    }
+    .carousel__btn {
+      width: 45px;
+      height: 45px;
+      font-size: 1.5rem;
+    }
+
+    .modal-img {
+      max-height: 70vh;
+      width: 100%;
+      object-fit: contain;
+      border: none;
+    }
+
+    .carousel__btn {
+      position: absolute;
+      top: 515px;
+      z-index: 10;
+    }
+
+    .carousel__btn--prev {
+      left: 10px;
+    }
+    .carousel__btn--next {
+      right: 10px;
+    }
+
+    .project-modal__close {
+      top: 1rem;
+      right: 1rem;
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .project-card:first-of-type::before {
+      top: 310px;
+      right: -10px;
+      width: 100px;
+      height: 140px;
+    }
+  }
+</style>
+
+<script>
+  function initProjectCards() {
+    const cards = document.querySelectorAll("[data-project-card]");
+
+    cards.forEach((card) => {
+      const modal = card.querySelector("[data-modal]") as HTMLDialogElement;
+      const trigger = card.querySelector("[data-trigger]");
+      const closeBtn = card.querySelector("[data-close]");
+      const slides = card.querySelectorAll("[data-slide]");
+      const dots = card.querySelectorAll("[data-dot]");
+      const nextBtn = card.querySelector("[data-next]");
+      const prevBtn = card.querySelector("[data-prev]");
+
+      let currentIndex = 0;
+
+      const updateCarousel = (index: number) => {
+        currentIndex = index;
+        slides.forEach((s, i) =>
+          i === currentIndex
+            ? s.setAttribute("data-active", "")
+            : s.removeAttribute("data-active"),
+        );
+        dots.forEach((d, i) =>
+          i === currentIndex
+            ? d.setAttribute("data-active", "")
+            : d.removeAttribute("data-active"),
+        );
+      };
+
+      trigger?.addEventListener("click", () => modal.showModal());
+      closeBtn?.addEventListener("click", () => modal.close());
+      modal?.addEventListener(
+        "click",
+        (e) => e.target === modal && modal.close(),
+      );
+
+      nextBtn?.addEventListener("click", () =>
+        updateCarousel((currentIndex + 1) % slides.length),
+      );
+      prevBtn?.addEventListener("click", () =>
+        updateCarousel((currentIndex - 1 + slides.length) % slides.length),
+      );
+    });
+  }
+
+  // Soporte para transiciones de Astro (View Transitions)
+  initProjectCards();
+  document.addEventListener("astro:after-swap", initProjectCards);
+</script>

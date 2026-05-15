@@ -1,0 +1,536 @@
+---
+import { Icon } from "astro-icon/components";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section id="contacto" class="contact">
+  <div class="contact__container">
+    <div class="contact__block">
+      <div class="contact__info-side">
+        <h2 class="contact__title">
+          {t("contact.title.part1")}
+          <span class="highlight">{t("contact.title.highlight")}</span>
+        </h2>
+        <p class="contact__text">
+          {t("contact.description")}
+        </p>
+
+        <div class="contact__links">
+          <a
+            href="#"
+            class="contact__link"
+            aria-label={t("contact.aria.linkedin")}
+          >
+            <Icon name="ri:linkedin-fill" /> LinkedIn
+          </a>
+          <a
+            href="#"
+            class="contact__link"
+            aria-label={t("contact.aria.github")}
+          >
+            <Icon name="ri:github-fill" /> GitHub
+          </a>
+          <button class="contact__link contact__link--copy" id="copy-email">
+            <Icon name="ri:file-copy-line" />
+            {t("contact.link.copyEmail")}
+          </button>
+        </div>
+      </div>
+
+      <div class="contact__coupon-side">
+        <form class="contact__form-coupon">
+          <div class="coupon-decor" aria-hidden="true">
+            <Icon
+              name="ri:scissors-line"
+              class="scissors-icon"
+              id="coupon-scissors"
+            />
+          </div>
+          <h3 class="coupon-title">{t("coupon.title")}</h3>
+          <p class="coupon-instruction">
+            {t("coupon.instruction")}
+          </p>
+
+          <div class="form-group">
+            <label for="name" class="form-label">{t("form.label.name")}</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-input"
+              required
+              placeholder={t("form.placeholder.name")}
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label">{t("form.label.email")}</label
+            >
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-input"
+              required
+              placeholder={t("form.placeholder.email")}
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="message" class="form-label"
+              >{t("form.label.message")}</label
+            >
+            <textarea
+              id="message"
+              name="message"
+              rows="3"
+              class="form-input form-textarea"
+              required
+              placeholder={t("form.placeholder.message")}></textarea>
+          </div>
+
+          <button type="submit" class="btn-coupon">
+            <Icon name="ri:mail-send-line" />
+            {t("form.button.send")}
+          </button>
+        </form>
+        <div id="contact-success" class="contact__success-message">
+          <Icon name="ri:checkbox-circle-fill" />
+          <h3>{t("form.success.title")}</h3>
+          <p>{t("form.success.text")}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    background-color: #000000;
+    padding: 7rem 5rem;
+    position: relative;
+  }
+  .contact::after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+
+    width: 100%;
+    height: clamp(80px, 15vw, 200px);
+
+    background: #000000;
+
+    mask-image: url("../assets/img/torn-paper.svg");
+    -webkit-mask-image: url("../assets/img/torn-paper.svg");
+
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+
+    mask-size: 100% auto;
+    -webkit-mask-size: 100% auto;
+
+    mask-position: bottom;
+    -webkit-mask-position: bottom;
+
+    transform: translateY(100%);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .contact__container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .contact__container::before {
+    content: "";
+    position: absolute;
+    bottom: -100px;
+    right: 2%;
+    width: 180px;
+    height: 180px;
+    background-image: url("../assets/img/stain-green.webp");
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 15;
+    transform: rotate(-10deg);
+    pointer-events: none;
+  }
+
+  .contact__block {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 4rem;
+    align-items: center;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+  }
+
+  .contact__block::before,
+  .contact__block::after {
+    content: "";
+    position: absolute;
+    z-index: 20;
+    pointer-events: none;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  .contact__block::before {
+    top: -30px;
+    right: -35px;
+    width: 110px;
+    height: 110px;
+    background-image: url("../assets/img/tape-green.webp");
+  }
+
+  .contact__block::after {
+    bottom: -20px;
+    left: -30px;
+    width: 150px;
+    height: 150px;
+    background-image: url("../assets/img/moon.webp");
+    transform: rotate(-10deg);
+    filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.2));
+  }
+
+  .contact__title {
+    font-family: var(--font-body);
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: #000;
+  }
+
+  .contact__title .highlight {
+    color: var(--secondary);
+    font-family: inherit;
+    font-weight: inherit;
+  }
+
+  .contact__text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--black);
+    margin-bottom: 3rem;
+    max-width: 450px;
+  }
+
+  .contact__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .contact__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: #000;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid #000;
+    transition: all 0.2s ease;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .contact__link:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  .contact__coupon-side {
+    position: relative;
+    perspective: 1000px;
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .contact__form-coupon {
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border: 2px dashed #000000;
+    position: relative;
+  }
+
+  .coupon-decor {
+    position: absolute;
+    top: -15px;
+    left: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgb(255, 255, 255);
+    padding: 0 10px;
+  }
+
+  .scissors-icon {
+    width: 24px;
+    height: 24px;
+    color: #000;
+  }
+
+  .coupon-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .coupon-instruction {
+    font-size: 0.9rem;
+    color: var(--black);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-label {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: #000;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #00000070;
+    color: #000;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-bottom-width: 2px;
+    border-bottom-color: var(--secondary);
+  }
+
+  .form-textarea {
+    resize: none;
+    border: 2px solid #cccccc70;
+    padding: 0.5rem;
+  }
+
+  .btn-coupon {
+    width: 100%;
+    padding: 1rem;
+    background-color: #000000;
+    color: var(--primary);
+    border: none;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    margin-top: 2rem;
+  }
+
+  .btn-coupon:hover {
+    background-color: var(--primary);
+    color: #000000;
+    letter-spacing: 1px;
+  }
+
+  .contact__success-message {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    display: none;
+    opacity: 0;
+  }
+
+  .contact__success-message h3 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+
+  .contact__success-message p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--black);
+  }
+
+  @media (max-width: 992px) {
+    .contact {
+      padding: 4rem 1.5rem;
+    }
+
+    .contact__container::before {
+      bottom: -50px;
+      width: 100px;
+      height: 100px;
+    }
+
+    .contact__block {
+      grid-template-columns: 1fr;
+      padding: 3rem 1.5rem;
+      gap: 3rem;
+    }
+
+    .contact__info-side {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .contact__text {
+      max-width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    .contact__links {
+      justify-content: center;
+    }
+
+    .contact__block::before {
+      width: 80px;
+      height: 80px;
+      top: -20px;
+      right: -20px;
+    }
+
+    .contact__block::after {
+      width: 100px;
+      height: 100px;
+      bottom: -30px;
+      left: -10px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .contact__form-coupon {
+      padding: 1.5rem;
+      width: 100%;
+    }
+
+    .coupon-title {
+      font-size: 1.3rem;
+    }
+
+    .coupon-decor {
+      left: 15px;
+    }
+
+    .contact__coupon-side {
+      min-height: auto;
+    }
+  }
+</style>
+
+<script>
+  import { actions } from "astro:actions";
+  import { gsap } from "gsap";
+
+  const form = document.querySelector(
+    ".contact__form-coupon",
+  ) as HTMLFormElement;
+  const scissors = document.getElementById("coupon-scissors");
+  const successMsg = document.getElementById("contact-success");
+
+  const scissorsSound = new Audio("/scissors.mp3");
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const submitBtn = form.querySelector("button") as HTMLButtonElement;
+    submitBtn.disabled = true;
+
+    const formData = new FormData(form);
+    const payload = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      message: formData.get("message") as string,
+      lang: document.documentElement.lang as "es" | "en",
+    };
+
+    const tl = gsap.timeline();
+
+    tl.to(scissors, {
+      x: form.offsetWidth - 40,
+      duration: 1.2,
+      ease: "power2.inOut",
+      onStart: () => {
+        scissorsSound
+          .play()
+          .catch((err) => console.log("Audio bloqueado por el navegador", err));
+
+        if ("vibrate" in navigator) {
+          navigator.vibrate([50, 30, 50, 30, 50]);
+        }
+      },
+    });
+
+    const { data, error } = await actions.sendCoupon(payload);
+
+    // const data = { success: true };
+    // await new Promise((resolve) => setTimeout(resolve, 500));
+
+    if (data?.success) {
+      tl.to(form, {
+        y: 400,
+        rotation: 10,
+        opacity: 0,
+        duration: 0.8,
+        ease: "back.in(1.7)",
+        onComplete: () => {
+          form.style.display = "none";
+          if (successMsg) {
+            successMsg.style.display = "block";
+            gsap.to(successMsg, { opacity: 1, y: -20, duration: 0.5 });
+          }
+        },
+      });
+    } else {
+      gsap.to(scissors, { x: 0, duration: 0.5 });
+      submitBtn.disabled = false;
+      alert("Error al enviar el cupón.");
+    }
+  });
+
+  const copyBtn = document.getElementById("copy-email");
+  const email = "osmar_h_n_@hotmail.com";
+
+  copyBtn?.addEventListener("click", () => {
+    navigator.clipboard.writeText(email).then(() => {
+      const originalText = copyBtn.innerHTML;
+      copyBtn.innerHTML = `<i class="ri-check-line"></i> ¡Copiado!`;
+      copyBtn.classList.add("active");
+
+      setTimeout(() => {
+        copyBtn.innerHTML = originalText;
+        copyBtn.classList.remove("active");
+      }, 2000);
+    });
+  });
+</script>

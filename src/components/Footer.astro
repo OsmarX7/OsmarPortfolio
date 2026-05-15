@@ -1,0 +1,213 @@
+---
+import { Icon } from "astro-icon/components";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer__container">
+    <div class="footer__status">
+      <span class="status-dot"></span>
+      <span class="status-text">{t("footer.status")}</span>
+    </div>
+
+    <div class="footer__actions">
+      <div class="footer__social">
+        <a
+          href="#"
+          class="footer__social-link"
+          aria-label={t("footer.aria.linkedin")}
+        >
+          <Icon name="ri:linkedin-fill" />
+        </a>
+        <a
+          href="#"
+          class="footer__social-link"
+          aria-label={t("footer.aria.github")}
+        >
+          <Icon name="ri:github-fill" />
+        </a>
+      </div>
+
+      <div class="footer__divider" aria-hidden="true"></div>
+
+      <p class="footer__copy">
+        &copy; {currentYear}
+        <span class="footer__name">Osmar Herrera</span> — {
+          t("footer.copy.part1")
+        }
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background-color: var(--white);
+    padding: 10rem 0 1rem;
+    border-top: 1px solid var(--gray-200);
+    position: relative;
+    overflow: hidden;
+  }
+  .footer::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 30%;
+    width: 10%;
+    height: 220px;
+
+    background-image: url("../assets/img/dummy.webp");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: bottom;
+
+    z-index: 10;
+    pointer-events: none;
+
+    /* Un toque de inclinación para el estilo mixed media */
+    transform: rotate(-5deg);
+    filter: drop-shadow(5px -5px 10px rgba(0, 0, 0, 0.1));
+  }
+
+  .footer__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    max-width: var(--container-max);
+    margin: auto;
+  }
+
+  .footer__status {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .status-dot {
+    width: 10px;
+    height: 10px;
+    background-color: var(--primary);
+    border-radius: 50%;
+    position: relative;
+  }
+
+  .status-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--primary);
+    border-radius: 50%;
+    animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+  }
+
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.7);
+      opacity: 0.8;
+    }
+    80%,
+    100% {
+      transform: scale(2.5);
+      opacity: 0;
+    }
+  }
+
+  .status-text {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--black);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .footer__actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .footer__social {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .footer__social-link {
+    color: var(--black);
+    font-size: 1.25rem;
+    transition:
+      transform 0.2s ease,
+      color 0.2s ease;
+    display: flex;
+  }
+
+  .footer__social-link:hover {
+    color: var(--secondary);
+    transform: translateY(-2px);
+  }
+
+  .footer__divider {
+    width: 1px;
+    height: 20px;
+    background-color: var(--gray-300);
+  }
+
+  .footer__copy {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    margin: 0;
+  }
+
+  .footer__name {
+    position: relative;
+    display: inline-block;
+    font-weight: 700;
+    z-index: 1;
+    color: var(--white);
+    margin: 0 1rem;
+  }
+
+  .footer__name::before {
+    content: "";
+    position: absolute;
+    top: -15%;
+    left: -8%;
+    width: 120%;
+    height: 150%;
+    background-image: url("https://s2.svgbox.net/pen-brushes.svg?ic=brush-10&color=8a2be2");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    z-index: -1;
+  }
+
+  @media (max-width: 768px) {
+    .footer__container {
+      flex-direction: column;
+      text-align: center;
+      gap: 1.5rem;
+    }
+
+    .footer__divider {
+      display: none;
+    }
+
+    .footer__actions {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .footer::after {
+      bottom: 30px;
+      left: -10px;
+      width: 100px;
+      height: 200px;
+      transform: rotate(40deg);
+    }
+  }
+</style>

@@ -1,0 +1,497 @@
+---
+import { Icon } from "astro-icon/components";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section id="perfil" class="profile">
+  <div class="profile__block">
+    <div class="profile__header">
+      <h2 class="profile__title reveal-title">{t("profile.title")}</h2>
+      <div class="profile__content">
+        <p class="profile__text">
+          {t("profile.description.p1")}
+        </p>
+        <p class="profile__text">
+          {t("profile.description.p2")}
+        </p>
+      </div>
+    </div>
+
+    <div class="profile__marquee-divider">
+      <div class="marquee-track">
+        {
+          Array(17)
+            .fill("STACK")
+            .map((text) => <span class="marquee-item">{text}</span>)
+        }
+      </div>
+    </div>
+
+    <div class="profile__stack-container">
+      <div class="stack-text-side">
+        <ul class="stack-list">
+          <li class="stack-item">
+            <span class="stack-cat">CORE / FE //</span> Astro, React, TypeScript,
+            GSAP, Tailwind
+          </li>
+          <li class="stack-item">
+            <span class="stack-cat">DATA / BE //</span> Supabase, PostgreSQL, MySQL
+          </li>
+          <li class="stack-item">
+            <span class="stack-cat">{t("stack.tools")} //</span> IA API's, Git, Vercel
+          </li>
+          <li class="stack-item">
+            <span class="stack-cat">{t("stack.design")} //</span>
+            {t("stack.design.skills")}
+          </li>
+          <li class="stack-item">
+            <span class="stack-cat">{t("stack.languages")} //</span>
+            {t("stack.lang")}
+          </li>
+        </ul>
+      </div>
+
+      <div class="stack-grid-masonry">
+        <div class="sticker sticker--lg" style="--rot: -2deg;">
+          <Icon name="ri:reactjs-fill" />
+          <span class="sticker-bubble">{t("sticker.main")}</span>
+        </div>
+
+        <div class="sticker sticker--lg" style="--rot: 3deg;">
+          <Icon name="ri:rocket-2-fill" />
+          <span class="sticker-bubble">{t("sticker.favorite")}</span>
+        </div>
+
+        <div class="sticker sticker--lg" style="--rot: -1deg;">
+          <Icon name="ri:database-2-fill" />
+          <span class="sticker-bubble">DB</span>
+        </div>
+
+        <div class="sticker" style="--rot: 4deg;">
+          <Icon name="ri:javascript-fill" />
+        </div>
+        <div class="sticker" style="--rot: -3deg;">
+          <Icon name="ri:tailwind-css-fill" />
+        </div>
+        <div class="sticker" style="--rot: 2deg;">
+          <Icon name="ri:supabase-fill" />
+          <span class="sticker-bubble">BaaS</span>
+        </div>
+        <div class="sticker" style="--rot: -4deg;">
+          <Icon name="ri:github-fill" />
+        </div>
+        <div class="sticker" style="--rot: 1deg;">
+          <Icon name="ri:vercel-fill" />
+        </div>
+        <div class="sticker" style="--rot: -2deg;">
+          <Icon name="ri:terminal-box-fill" />
+        </div>
+        <div class="sticker" style="--rot: 5deg;">
+          <Icon name="ri:robot-2-fill" />
+        </div>
+
+        <div class="sticker" style="--rot: 2deg;">
+          <Icon name="ri:code-s-slash-line" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .profile {
+    padding: 6rem 5rem;
+    background-color: var(--white);
+    position: relative;
+  }
+  .profile::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: clamp(80px, 15vw, 200px);
+
+    background: #ffffff;
+
+    mask-image: url("../assets/img/torn-paper.svg");
+    -webkit-mask-image: url("../assets/img/torn-paper.svg");
+
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+
+    mask-size: 100% auto;
+    -webkit-mask-size: 100% auto;
+
+    mask-position: bottom;
+    -webkit-mask-position: bottom;
+
+    transform: translateY(100%);
+    pointer-events: none;
+    z-index: 10;
+
+    transform: translateY(calc(100% - 1.5px));
+
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  .profile::before {
+    content: "";
+    position: absolute;
+    top: 80px;
+    right: 60px;
+    width: 110px;
+    height: 110px;
+    background-image: url("../assets/img/tape-purple.webp");
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: rotate(12deg);
+    z-index: 20;
+    pointer-events: none;
+  }
+
+  .profile__block {
+    background-color: #000000;
+    padding: 4rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .profile__title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 6vw, 3rem);
+    font-weight: 700;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 0.4rem;
+    color: var(--black);
+    z-index: 1;
+    margin-bottom: 3rem;
+  }
+  .profile__title::before {
+    content: "";
+    position: absolute;
+    left: -8%;
+    top: -20px;
+    width: 120%;
+    height: 150%;
+    background-image: url("https://s2.svgbox.net/pen-brushes.svg?ic=brush-1&color=b7ff00");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    z-index: -1;
+
+    will-change: clip-path;
+    clip-path: var(--brush-clip, inset(0 100% 0 0));
+    transition: clip-path 0.5s ease;
+  }
+
+  .profile__content {
+    max-width: 700px;
+    margin-bottom: 4rem;
+  }
+
+  .profile__text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    perspective: 1000px;
+  }
+  .profile__text span {
+    display: block;
+    transform: translateY(110%);
+    will-change: transform;
+  }
+  .word-wrapper {
+    vertical-align: top;
+  }
+
+  .profile__marquee-divider {
+    background: var(--primary);
+    color: #000;
+    padding: 0.75rem 0;
+    margin: 0 -4rem 4rem -4rem;
+    transform: rotate(-1.5deg) scale(1.05);
+    display: flex;
+    overflow: hidden;
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+    white-space: nowrap;
+  }
+
+  .marquee-track {
+    display: inline-flex;
+    white-space: nowrap;
+    gap: 2rem;
+    padding: 0 1rem;
+    will-change: transform;
+  }
+
+  .marquee-item {
+    font-family: var(--font-body);
+    font-weight: 900;
+    font-size: 1.2rem;
+    cursor: default;
+    transition:
+      transform 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .marquee-item:hover {
+    transform: skewX(-10deg);
+    color: #ffffff;
+  }
+
+  .profile__stack-container {
+    display: flex;
+    gap: 5rem;
+    align-items: center;
+    min-height: 500px;
+  }
+
+  .stack-text-side {
+    flex: 1.2;
+  }
+
+  .stack-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .stack-item {
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    list-style: none;
+    line-height: 1.4;
+  }
+
+  .stack-cat {
+    color: var(--primary);
+    font-weight: 800;
+    margin-right: 0.75rem;
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .stack-grid-masonry {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 70px;
+    gap: 1rem;
+    padding: 1rem;
+    position: relative;
+  }
+
+  .sticker {
+    background-color: var(--primary);
+    color: var(--black);
+    border: 2px solid var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transform: rotate(var(--rot));
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 4px 4px 0px var(--black);
+    padding: 0.8rem;
+    opacity: 0;
+    visibility: hidden;
+    will-change: transform, opacity;
+  }
+
+  .sticker--lg {
+    grid-column: span 2;
+    grid-row: span 2;
+    padding: 1.5rem;
+  }
+
+  .sticker:hover {
+    transform: rotate(0deg) scale(1.05);
+    z-index: 10;
+    background-color: var(--white);
+    box-shadow: 8px 8px 0px var(--black);
+  }
+
+  .sticker [data-icon] {
+    width: 100%;
+    height: 100%;
+  }
+
+  .sticker-bubble {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: var(--secondary);
+    color: var(--white);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    font-weight: bold;
+    border: 1.5px solid var(--black);
+    transform: rotate(10deg);
+    box-shadow: 2px 2px 0px var(--black);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 992px) {
+    .profile {
+      padding: 4rem 1.5rem;
+    }
+    .profile::before {
+      top: 50px;
+      right: 10px;
+    }
+
+    .profile__block {
+      padding: 2.5rem 1.5rem;
+    }
+
+    .profile__stack-container {
+      flex-direction: column;
+      gap: 3rem;
+      min-height: auto;
+    }
+
+    .stack-grid-masonry {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .sticker--lg {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+    .sticker-bubble {
+      font-size: 0.55rem;
+      padding: 1px 4px;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const track = document.querySelector(".marquee-track");
+
+  const setupCrazyParagraphs = () => {
+    const paragraphs = document.querySelectorAll(".profile__text");
+
+    paragraphs.forEach((p) => {
+      const htmlElement = p as HTMLElement; // Solución al error de TS
+      const words = htmlElement.innerText.split(" ");
+
+      // Limpiamos el párrafo y creamos un span por cada palabra
+      htmlElement.innerHTML = words
+        .map(
+          (
+            word,
+          ) => `<span class="word-wrapper" style="display: inline-block; overflow: hidden;">
+                        <span class="word" style="display: inline-block;">${word}&nbsp;</span>
+                      </span>`,
+        )
+        .join("");
+    });
+
+    const allWords = document.querySelectorAll(".profile__text .word");
+
+    if (allWords.length > 0) {
+      gsap.from(allWords, {
+        scrollTrigger: {
+          trigger: ".profile__content",
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+        y: 50,
+        rotation: "random(-15, 15)", // Rotación aleatoria para ese look mixed media
+        opacity: 0,
+        scale: 2, // Viene de "grande" a su tamaño normal
+        duration: 0.8,
+        ease: "back.out(2)", // Rebote para simular impacto
+        stagger: {
+          amount: 1.2, // Tiempo total para revelar todo el texto
+          from: "start",
+        },
+      });
+    }
+  };
+
+  const setupStickerExplosion = () => {
+    const stickers = document.querySelectorAll(".sticker");
+    const grid = document.querySelector(".stack-grid-masonry");
+
+    if (stickers.length > 0 && grid) {
+      // Estado inicial: los preparamos fuera de su sitio
+      gsap.set(stickers, {
+        visibility: "visible",
+        opacity: 0,
+        scale: 0,
+        x: () => Math.random() * 500 - 250,
+        y: () => Math.random() * 400 - 200,
+        rotation: () => Math.random() * 120 - 60,
+      });
+
+      gsap.to(stickers, {
+        scrollTrigger: {
+          trigger: grid,
+          start: "top 90%",
+          toggleActions: "play none none none",
+        },
+        x: 0,
+        y: 0,
+        // Corregimos el error de TS: parseamos a Float para asegurar que sea número
+        rotation: (i, target: HTMLElement) => {
+          const rot = getComputedStyle(target).getPropertyValue("--rot").trim();
+          return parseFloat(rot) || 0;
+        },
+        opacity: 1,
+        scale: 1,
+        duration: 1.2,
+        ease: "elastic.out(1, 0.75)",
+        stagger: {
+          amount: 0.6,
+          from: "random",
+        },
+        onComplete: () => {
+          // CLAVE: Solo limpiamos transform.
+          // NO usamos "all" para no perder el opacity: 1 y visibility: visible
+          gsap.set(stickers, { clearProps: "transform" });
+        },
+      });
+    }
+  };
+
+  if (track) {
+    gsap.to(track, {
+      // Movemos el track hacia la izquierda
+      // -50% asegura que si el contenido está duplicado, el loop sea perfecto
+      xPercent: -30,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".profile__marquee-divider", // Se activa al ver la cinta
+        start: "top bottom", // Empieza cuando la cinta asoma por abajo
+        end: "bottom top", // Termina cuando la cinta sale por arriba
+        scrub: 1, // El número añade un suavizado (1 segundo de "seguimiento")
+      },
+    });
+  }
+
+  window.addEventListener("load", () => {
+    setupCrazyParagraphs();
+    setupStickerExplosion();
+  });
+</script>

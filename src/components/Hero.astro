@@ -1,0 +1,327 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+import avatarImg from "../assets/img/avatar.png";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="hero">
+  <div class="hero__content">
+    <div class="hero__text">
+      <h1 class="hero__name">Osmar Herrera Moreno</h1>
+      <p class="hero__title">
+        {t("hero.title.part1")}
+        <span class="torn-effect">{t("hero.title.highlight")}</span>
+        {t("hero.title.part2")}
+      </p>
+      <p class="hero__description">
+        {
+          t("hero.description.part1") && (
+            <span>{t("hero.description.part1")} </span>
+          )
+        }
+        <strong class="highlight">{t("hero.description.highlight")}</strong>
+        {t("hero.description.part2")}
+      </p>
+      <a
+        href="/CV-Osmar-Herrera-2026.pdf"
+        download="CV_Osmar_Herrera_2026"
+        class="btn btn--hero"
+      >
+        <Icon name="ri:download-2-line" />
+        {t("hero.cv.button")}
+      </a>
+    </div>
+    <div class="hero__visual">
+      <Image
+        src={avatarImg}
+        alt="Osmar Herrera - Fullstack Developer"
+        class="hero__composite-img"
+        loading="eager"
+        fetchpriority="high"
+        decoding="sync"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: 99vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--black);
+    position: relative;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: clamp(80px, 15vw, 200px);
+
+    background: #000000;
+
+    /* Mask limpio (sin shorthand conflictivo) */
+    mask-image: url("../assets/img/torn-paper.svg");
+    -webkit-mask-image: url("../assets/img/torn-paper.svg");
+
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+
+    mask-size: 100% auto;
+    -webkit-mask-size: 100% auto;
+
+    mask-position: bottom;
+    -webkit-mask-position: bottom;
+
+    transform: translateY(100%);
+    pointer-events: none;
+    z-index: 10;
+
+    transform: translateY(calc(100% - 1.5px));
+
+    /* Fuerza al navegador a usar antialiasing más agresivo */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  .hero__content {
+    width: 100%;
+    max-width: var(--container-max);
+    margin: 24px auto 0;
+    padding: 0 var(--container-padding);
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  .hero__text {
+    max-width: 540px;
+  }
+  .hero__text > * {
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  .hero__name {
+    font-family: var(--font-heading);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 2rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .hero__title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+    color: var(--primary);
+  }
+
+  .torn-effect {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 0.4rem;
+    color: var(--black);
+    z-index: 1;
+    font-weight: inherit;
+  }
+
+  .torn-effect::before {
+    content: "";
+    position: absolute;
+    left: -8%;
+    width: 120%;
+    height: 125%;
+
+    background-image: url("https://s2.svgbox.net/pen-brushes.svg?ic=brush-4&color=b7ff00");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    z-index: -1;
+  }
+
+  .hero__description {
+    font-size: 1.125rem;
+    color: var(--gray-200);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .highlight {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  .hero__visual {
+    perspective: 1000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .hero__composite-img {
+    max-width: 300px;
+    transition: transform 0.1s ease-out;
+    will-change: transform;
+  }
+
+  .btn {
+    width: 50%;
+    padding: 1rem 1.5rem;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    border: none;
+    text-decoration: none;
+  }
+
+  .btn--hero {
+    background-color: var(--primary);
+    color: var(--black);
+  }
+
+  .btn--hero:hover {
+    background-color: var(--white);
+    color: var(--black);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(var(--primary-rgb), 0.2);
+  }
+
+  @media (max-width: 992px) {
+    .hero__content {
+      flex-direction: column-reverse;
+      text-align: center;
+      gap: 3rem;
+      padding-top: 1rem;
+    }
+
+    .hero__text {
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero__title {
+      font-size: clamp(2.5rem, 10vw, 3.5rem);
+    }
+
+    .hero__description {
+      max-width: 500px;
+    }
+
+    .btn--hero {
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .hero__composite-img {
+      max-width: 240px;
+      transform: rotate(0deg) !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero__name {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .torn-effect::before {
+      left: -5%;
+      width: 110%;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+
+  const card = document.querySelector(".hero__composite-img");
+  const container = document.querySelector(".hero__visual");
+
+  const tl = gsap.timeline({ defaults: { ease: "back.out(1.7)" } });
+
+  tl.fromTo(
+    ".hero__text > *",
+    {
+      opacity: 0,
+      y: 50,
+      rotation: () => Math.random() * 10 - 5,
+    },
+    {
+      opacity: 1,
+      y: 0,
+      rotation: 0,
+      duration: 0.8,
+      stagger: 0.2,
+    },
+  );
+
+  tl.from(
+    ".hero__visual",
+    {
+      opacity: 0,
+      scale: 0.8,
+      rotation: 15,
+      duration: 1,
+      ease: "elastic.out(1, 0.5)",
+    },
+    "-=0.5",
+  );
+
+  if (card && container) {
+    container.addEventListener("mousemove", (e) => {
+      const { clientX, clientY } = e;
+      const { left, top, width, height } = container.getBoundingClientRect();
+
+      const centerX = left + width / 2;
+      const centerY = top + height / 2;
+
+      const mouseX = (clientX - centerX) / (width / 2);
+      const mouseY = (clientY - centerY) / (height / 2);
+
+      gsap.to(card, {
+        duration: 0.5,
+        rotateY: mouseX * 10,
+        rotateX: -mouseY * 10,
+        x: mouseX * 10,
+        y: mouseY * 10,
+        ease: "power2.out",
+      });
+    });
+
+    container.addEventListener("mouseleave", () => {
+      gsap.to(card, {
+        duration: 0.8,
+        rotateX: 0,
+        rotateY: 0,
+        x: 0,
+        y: 0,
+        ease: "back.out(1.7)",
+      });
+    });
+  }
+</script>
