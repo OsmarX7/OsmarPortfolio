@@ -1,4 +1,408 @@
 ---
-import SpanishPage from '../index.astro';
+import Layout from "../../layouts/Layout.astro";
+import Hero from "../../components/Hero.astro";
+import Profile from "../../components/Profile.astro";
+import Contact from "../../components/Contact.astro";
+import Footer from "../../components/Footer.astro";
+import ProjectCard from "../../components/ProjectGallery.astro";
+import TimelineItem from "../../components/TimelineItem.astro";
+import { Icon } from "astro-icon/components";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+
+import knodesktop1 from "../../assets/img/knodesktop1.png";
+import knodesktop2 from "../../assets/img/knodesktop2.png";
+import knomobile from "../../assets/img/knomobile.png";
+import wwdesktop1 from "../../assets/img/wwdesktop1.png";
+import wwdesktop2 from "../../assets/img/wwdesktop2.png";
+import wwmobile from "../../assets/img/wwmobile.png";
+import bushgreen from "../../assets/img/bushgreen.png";
+import nosignal from "../../assets/img/nosignal.png";
+import antiquestatue from "../../assets/img/antiquestatue.png";
+import crown from "../../assets/img/crown.png";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const nextLang = lang === "es" ? "en" : "es";
+let destination = Astro.url.pathname.replace(`/${lang}`, "") || "/";
+if (nextLang !== "es") {
+  destination = `/${nextLang}${destination}`;
+}
+destination = destination.replace(/\/+/g, "/");
+
+interface ExperienceItem {
+  date: string;
+  role: string;
+  company: string;
+  description: string;
+  side: "left" | "right";
+}
+const experience = t("experience.items") as ExperienceItem[];
+
+const stickers = [bushgreen, nosignal, antiquestatue, crown];
 ---
-<SpanishPage />
+
+<Layout>
+  <header class="header">
+    <nav class="nav">
+      <ul class="nav__list">
+        <li><a href="#proyectos" class="nav__link">{t("nav.projects")}</a></li>
+        <li><a href="#perfil" class="nav__link">{t("nav.profile")}</a></li>
+        <li>
+          <a href="#trayectoria" class="nav__link">{t("nav.experience")}</a>
+        </li>
+        <li><a href="#contacto" class="nav__link">{t("nav.contact")}</a></li>
+      </ul>
+
+      <a
+        href={destination}
+        class="nav__lang"
+        aria-label={lang === "es" ? "Switch to English" : "Cambiar a Español"}
+      >
+        <Icon name="ri:global-line" />
+        <span>{nextLang.toUpperCase()}</span>
+      </a>
+    </nav>
+  </header>
+
+  <Hero />
+
+  <section id="proyectos" class="projects">
+    <div class="container">
+      <h2 class="project-title reveal-title">{t("projects.title")}</h2>
+
+      <div class="projects__list">
+        <ProjectCard
+          number="01"
+          name={t("projects.kno.name")}
+          description={t("projects.kno.description")}
+          tech={["Astro", "React", "Supabase (Realtime y DB)", "GSAP"]}
+          demoUrl="https://kno-amber.vercel.app/"
+          repoUrl="https://github.com/OsmarX7/KNO"
+          images={[knomobile, knodesktop2, knodesktop1]}
+        />
+        <ProjectCard
+          number="02"
+          name={t("projects.wordwave.name")}
+          description={t("projects.wordwave.description")}
+          tech={["Astro", "React", "Supabase (Buckets)", "GSAP"]}
+          demoUrl="https://wordwave-taupe.vercel.app/"
+          repoUrl="https://github.com/OsmarX7/WordWave"
+          images={[wwmobile, wwdesktop2, wwdesktop1]}
+        />
+      </div>
+
+      <a href="#" class="btn btn--outline">{t("projects.viewMore")}</a>
+    </div>
+  </section>
+
+  <Profile />
+
+  <section id="trayectoria" class="timeline-section">
+    <div class="container">
+      <h2 class="section-title reveal-title">{t("timeline.title")}</h2>
+
+      <div class="timeline">
+        <div class="timeline__line"></div>
+
+        {
+          experience.map((item, index) => (
+            <TimelineItem
+              {...item}
+              sticker={stickers[index % stickers.length]}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <Contact />
+
+  <Footer />
+</Layout>
+
+<style>
+  .container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
+  }
+
+  /* ===================================
+   HEADER / NAVIGATION
+   =================================== */
+  .header {
+    position: absolute; /* Estático en la parte superior */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 1.5rem 0;
+    background: transparent; /* Eliminamos el degradado/sombra */
+  }
+
+  .nav {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav__list {
+    display: flex;
+    gap: 2.5rem;
+  }
+
+  .nav__link {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--primary);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    position: relative; /* Necesario para el pseudo-elemento */
+    transition: color 0.4s ease;
+  }
+  .nav__link:hover {
+    color: var(--black);
+    transition: color 0.5s ease 0.15s;
+  }
+
+  .nav__link::before {
+    content: "";
+    position: absolute;
+    left: -9%;
+    width: 120%;
+    height: 150%;
+    background-image: url("https://s2.svgbox.net/pen-brushes.svg?ic=brush-10&color=b7ff00");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    z-index: -1;
+
+    /* Empezamos con el recorte al 100% (invisible) */
+    clip-path: inset(0 100% 0 0);
+    /* Transición suave para cuando el mouse se retira */
+    transition: clip-path 0.4s ease-in;
+  }
+
+  .nav__link:hover::before {
+    /* Al hacer hover, aplicamos la animación de dibujo */
+    animation: draw-brush 0.7s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    /* Quitamos la transición de retroceso para que la animación mande */
+    transition: none;
+  }
+
+  @keyframes draw-brush {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  .nav__lang {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--white);
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    background: transparent;
+    border: 1px solid var(--gray-700);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .nav__lang:hover {
+    border-color: var(--primary);
+    background-color: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary);
+  }
+
+  .nav__lang [data-icon] {
+    font-size: 1.1rem;
+  }
+
+  /* ===================================
+   PROJECTS SECTION
+   =================================== */
+  .projects {
+    background-color: var(--white);
+    padding: 8rem 0 0;
+    position: relative;
+  }
+
+  .projects .container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .project-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 6vw, 3rem);
+    font-weight: 700;
+    position: relative;
+    opacity: 0;
+    display: inline-block;
+    align-items: center;
+    padding: 0 0.4rem;
+    color: var(--white);
+    z-index: 1;
+    margin-bottom: 3rem;
+  }
+  .project-title::before {
+    content: "";
+    position: absolute;
+    left: -8%;
+    top: -20px;
+    width: 120%;
+    height: 150%;
+
+    background-image: url("https://s2.svgbox.net/pen-brushes.svg?ic=brush-1&color=8a2be2");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    z-index: -1;
+
+    will-change: clip-path;
+    clip-path: var(--brush-clip, inset(0 100% 0 0));
+    transition: clip-path 0.5s ease;
+  }
+
+  .projects .btn--outline {
+    margin-top: 3rem;
+    visibility: hidden;
+  }
+
+  .projects__list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* ===================================
+   TIMELINE SECTION
+   =================================== */
+  .timeline-section {
+    background-color: var(--black); /* Negro puro */
+    padding: 8rem 0 0;
+  }
+  .timeline {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .timeline__line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(183, 255, 0, 1) 15%,
+      rgba(183, 255, 0, 1) 85%,
+      transparent
+    );
+    transform: translateX(-50%);
+  }
+
+  .section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 6vw, 3rem);
+    font-weight: 700;
+    position: relative;
+    display: inline-flex; /* Cambiado a inline-flex para mejor control de alineación */
+    align-items: center;
+    padding: 0 0.4rem;
+    color: var(--black);
+    z-index: 1;
+    margin-bottom: 3rem;
+  }
+  .section-title::before {
+    content: "";
+    position: absolute;
+    left: -8%;
+    top: -20px;
+    width: 120%;
+    height: 150%;
+
+    /* Tu nuevo SVG como fondo */
+    background-image: url("https://s2.svgbox.net/pen-brushes.svg?ic=brush-1&color=b7ff00");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    z-index: -1;
+
+    will-change: clip-path;
+    clip-path: var(--brush-clip, inset(0 100% 0 0));
+    transition: clip-path 0.5s ease; /* Pequeño suavizado extra */
+  }
+
+  /* --- RESPONSIVE HEADER --- */
+  @media (max-width: 768px) {
+    .header {
+      padding: 1rem 0;
+    }
+
+    .nav {
+      flex-direction: row; /* Mantenemos logo/links a un lado y el idioma al otro */
+    }
+
+    .nav__list {
+      display: none; /* Típicamente aquí usarías un menú hamburguesa o lo ocultas para simplificar */
+    }
+
+    .nav__lang {
+      font-size: 0.7rem;
+      padding: 0.3rem 0.6rem;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const setupTitleReveals = () => {
+    const titles = document.querySelectorAll(".reveal-title");
+
+    titles.forEach((title) => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: title,
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      tl.fromTo(
+        title,
+        { opacity: 0, scale: 0.9 },
+        { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" },
+      ).to(
+        title,
+        {
+          "--brush-clip": "inset(0 0% 0 0)",
+          duration: 0.8,
+          ease: "power3.inOut",
+        },
+        "-=0.3",
+      );
+    });
+  };
+
+  setupTitleReveals();
+
+  console.log("Ciao! Se stai leggendo questo, parliamo un po' di codice? 😉");
+</script>
